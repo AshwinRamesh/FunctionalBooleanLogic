@@ -1,7 +1,7 @@
 ;;;; Assignment 1 - COMP3109
 ;;;; @author Ashwin Ramesh
 
-
+;; Function to find all unique variable names in a query
 (defun find-vars (x) ; x represents a query
 	(if (typep x 'list)
 		(case (list-length x)
@@ -20,3 +20,4 @@
 		)
 	)
 )
+
