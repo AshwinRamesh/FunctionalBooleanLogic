@@ -1,6 +1,6 @@
 setq query1 = '(s-var a)
 setq query2 = '(s-not (s-var a))
-setq query3 = '(s-and (s-var a) (s-var b))
-setq query4 = '(s-not (s-and (s-var a) (s-var b)))
-setq query5 = '(s-and (s-and (s-var a) (s-var b)) (s-and (s-var c) (s-var d)))
-
+setq query3 = '(s-nand (s-var a) (s-var b))
+setq query4 = '(s-not (s-nand (s-var a) (s-var b)))
+setq query5 = '(s-nand (s-nand (s-var a) (s-var b)) (s-nand (s-var c) (s-var d)))
+(setq env '((a nil) (b T) (c T) (d nil)))
