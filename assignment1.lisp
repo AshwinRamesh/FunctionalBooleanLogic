@@ -25,6 +25,12 @@
 ;; Function to simplify the query
 ;; (s-not (s-not (s-var a))) --> (s-var a)
 (defun simplify (query)
-	(cond ((and (equal (first query) (first (second query))) (equal 's-not (first query))) ;; a condition to check if the first item in the query
-                                                                                           ;; and the first item in the rest of the query is s-not
-		   (second (second query)))))
+    (cond
+        ((and (equal (first query) 's-not) (equal (first (second query)) 's-not)) (simplify (second (second query)))) ;; check for double negatives
+        (t query) ;; return the query since it cannot be simplified further
+        (() ()) ;;
+    )
+)
+	;;(cond ((and (equal (first query) (first (second query))) (equal 's-not (first query))) ;; a condition to check if the first item in the query
+                                                        ; and the first item in the rest of the query is s-not
+	;;	   (second (second query)))))
