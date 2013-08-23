@@ -54,9 +54,10 @@
 ;; (s-not (s-not (s-var a))) --> (s-var a)
 (defun simplify (query)
     (cond
+        ((and (equal (first query) 's-nand) (compare (second query) (third query))) nil) ;; check if two params of s-nand are the same --> RETURNS NIL
         ((and (equal (first query) 's-not) (equal (first (second query)) 's-not)) (simplify (second (second query)))) ;; check for double negatives
+        ((and (equal (first query) 's-not) (and (equal (first (second query)) 's-nand) (compare (second (second query)) (third (second query))))) t) ;; check for not encapsulating a s-nand (s-not (s-nand A B))
         ((and (equal (first query) 's-not) (equal (first (second query)) 's-nand)) (list 's-and (simplify (second (second query))) (simplify (third (second query))))) ;; check for not encapsulating a s-nand (s-not (s-nand A B))
-        ((and (equal (first query) 's-nand) (compare (second query) (third query))) (list 'nil)) ;; check if two params of s-nand are the same --> RETURNS NIL
         ((equal (first query) 's-not) (list 's-not (simplify (second query)))) ;; base case 1 (for s-not)
         ((equal (first query) 's-nand) (list 's-nand (simplify (second query)) (simplify (third query)))) ;; base case 2 (for s-nand)
         (t query))) ;; base case 3 return the query since it cannot be simplified further

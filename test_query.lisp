@@ -10,4 +10,5 @@
 (setq query8 '(s-not (s-nand (s-not (s-not (s-var a))) (s-var b))))
 (setq query9 '(s-nand (s-var a) (s-var a)))
 (setq query10 '(s-nand (s-nand (s-var a) (s-var b)) (s-nand (s-var a) (s-var b))))
+(setq query11 '(s-not (s-nand (s-nand (s-var a) (s-var b)) (s-nand (s-var a) (s-var b)))))
 (setq env '((a nil) (b T) (c T) (d nil)))
