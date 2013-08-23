@@ -1,6 +1,32 @@
 ;;;; Assignment 1 - COMP3109
 ;;;; @author Ashwin Ramesh
 
+
+;;; ADDITIONAL FUNCTIONS (these will help solve one or more of the assignment functions)
+;; Based of --> http://stackoverflow.com/questions/15760966/lisp-how-can-i-test-if-two-lists-have-the-same-elements
+(defun ismember (x liste)
+   (cond
+      ((null liste) ())
+      ((equal (car liste) x) liste)
+      (t (ismember x (cdr liste)))))
+
+(defun inclus (liste1 liste2)
+   (cond
+      ((null liste1) t)
+      ((ismember (car liste1) liste2)(inclus (cdr liste1) liste2))
+      (t ())))
+
+(defun compare (liste1 liste2)
+   (if (and (inclus liste1 liste2) (inclus liste2 liste1))
+      t ; lists are the same
+      nil ; list are not the same
+      ))
+
+
+;;; END OF ADDITIONAL FUNCTIONS
+
+
+
 ;; Function to find all unique variable names in a query
 (defun find-vars (query) ; query represents a query-
 	(if (typep query 'list)
@@ -22,15 +48,15 @@
           ((equal 's-not (first query)) (not (funcall (transformer (second query)) env))) ;; check if s-not --> return opposite of value for var from env
 		  ((equal 's-nand (first query)) (not (and (funcall (transformer (second query)) env) (funcall (transformer (third query)) env))))))) ;; check if s-nand --> return a composite recursive call to transformer
 
+
+
 ;; Function to simplify the query
 ;; (s-not (s-not (s-var a))) --> (s-var a)
 (defun simplify (query)
     (cond
         ((and (equal (first query) 's-not) (equal (first (second query)) 's-not)) (simplify (second (second query)))) ;; check for double negatives
-        (t query) ;; return the query since it cannot be simplified further
-        (() ()) ;;
-    )
-)
-	;;(cond ((and (equal (first query) (first (second query))) (equal 's-not (first query))) ;; a condition to check if the first item in the query
-                                                        ; and the first item in the rest of the query is s-not
-	;;	   (second (second query)))))
+        ((and (equal (first query) 's-not) (equal (first (second query)) 's-nand)) (list 's-and (simplify (second (second query))) (simplify (third (second query))))) ;; check for not encapsulating a s-nand (s-not (s-nand A B))
+        ((and (equal (first query) 's-nand) (compare (second query) (third query))) (list 'nil)) ;; check if two params of s-nand are the same --> RETURNS NIL
+        ((equal (first query) 's-not) (list 's-not (simplify (second query)))) ;; base case 1 (for s-not)
+        ((equal (first query) 's-nand) (list 's-nand (simplify (second query)) (simplify (third query)))) ;; base case 2 (for s-nand)
+        (t query))) ;; base case 3 return the query since it cannot be simplified further
