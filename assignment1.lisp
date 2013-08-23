@@ -25,7 +25,8 @@
 
 ;;; END OF ADDITIONAL FUNCTIONS
 
-
+;;;; @author Ashwin Ramesh | 311254012 | aram7972
+;;;; Assignment for COMP3109 @ University of Sydney
 
 ;; Function to find all unique variable names in a query
 (defun find-vars (query) ; query represents a query-
